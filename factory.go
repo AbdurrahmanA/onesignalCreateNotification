@@ -66,6 +66,12 @@ func NotificationFactory(a INotification) Notification {
 		ID:      a.getID(),
 	}
 }
+
+//AppCreate AppCreate
+type AppCreate struct {
+	AppID string
+}
+
 func (App AppCreate) createNotification(msg string, title string, id ...[]string) error {
 	if len(id) == 0 {
 		forAllUsersnoti := ForAllUsers{Notification{Message: msg, Title: title}}

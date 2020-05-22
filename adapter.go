@@ -126,11 +126,6 @@ func (w NotificationForAllUsersAdapter) pushNotification(appID, msg, title strin
 	return err
 }
 
-//AppCreate AppCreate
-type AppCreate struct {
-	AppID string
-}
-
 //Push Push
 func Push(i IPushNotification, n Notification, a AppCreate) error {
 	err := i.pushNotification(a.AppID, n.getMessage(), n.getTitle(), n.getID())
