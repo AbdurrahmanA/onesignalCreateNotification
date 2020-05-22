@@ -74,7 +74,7 @@ type AppCreate struct {
 	AppID string
 }
 
-func (a AppCreate) createNotification(msg string, title string, id ...[]string) error {
+func createNotification(msg string, title string, id ...[]string) error {
 	if len(id) == 0 {
 		forAllUsersnoti := ForAllUsers{Notification{Message: msg, Title: title}}
 		adapted := NotificationForAllUsers{}
