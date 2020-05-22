@@ -1,8 +1,5 @@
 package onesignal
 
-//App App
-var App AppCreate
-
 //INotification IPush
 type INotification interface {
 	getMessage() string
@@ -69,7 +66,7 @@ func NotificationFactory(a INotification) Notification {
 		ID:      a.getID(),
 	}
 }
-func createNotification(msg string, title string, id ...[]string) error {
+func (App AppCreate) createNotification(msg string, title string, id ...[]string) error {
 	if len(id) == 0 {
 		forAllUsersnoti := ForAllUsers{Notification{Message: msg, Title: title}}
 		adapted := NotificationForAllUsers{}
