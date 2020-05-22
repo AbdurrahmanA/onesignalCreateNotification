@@ -67,14 +67,13 @@ func NotificationFactory(a INotification) Notification {
 	}
 }
 
-var app AppCreate
-
 //AppCreate AppCreate
 type AppCreate struct {
 	AppID string
 }
 
-func createNotification(msg string, title string, id ...[]string) error {
+//CreateNotification CreateNotification
+func (app AppCreate) CreateNotification(msg string, title string, id ...[]string) error {
 	if len(id) == 0 {
 		forAllUsersnoti := ForAllUsers{Notification{Message: msg, Title: title}}
 		adapted := NotificationForAllUsers{}
