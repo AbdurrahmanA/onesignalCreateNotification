@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"strconv"
 	"strings"
 )
 
@@ -42,27 +41,26 @@ func (a NotificationForUser) pushNotification(appID, msg, title string, id [][]s
 
 	out, err := json.Marshal(a)
 	if err != nil {
-		//return false
+		return errors.New("Json Marshal error")
 	}
 	reqBody := strings.NewReader(string(out))
 	request, err := http.NewRequest("POST", "https://onesignal.com/api/v1/notifications", reqBody)
 	request.Header.Set("Content-Type", "application/json")
 	request.Header.Set("Authorization", "Basic NDBjM2I0YTMtNDNkNS00NTgwLWE2MWYtOGNkY2MxNzUyYTdk")
 	if err != nil {
-		//return false
+		return errors.New("Http request error")
 	}
 	resp, err := client.Client.Do(request)
 	if err != nil {
-		//return false
+		return errors.New("Client Do error")
 	}
 
 	var result map[string]interface{}
 	json.NewDecoder(resp.Body).Decode(&result)
-	fmt.Println(result)
+	last := fmt.Sprintf("%v", result)
 	if resp.StatusCode != 200 {
-		//return false
+		return errors.New(last)
 	}
-	//return true
 	return nil
 }
 
@@ -109,9 +107,9 @@ func (w NotificationForAllUsers) pushNotiForAllUser(appID, msg, title string) er
 	}
 	var result map[string]interface{}
 	json.NewDecoder(resp.Body).Decode(&result)
-	fmt.Println(result)
+	last := fmt.Sprintf("%v", result)
 	if resp.StatusCode != 200 {
-		return errors.New(strconv.Itoa(resp.StatusCode))
+		return errors.New(last)
 	}
 	return nil
 }
