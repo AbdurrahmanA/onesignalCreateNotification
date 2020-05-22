@@ -1,4 +1,4 @@
-# onesignalCreateNotification
+# OnesignalCreateNotification
 
 ```go
 onesignal.NewClient()
