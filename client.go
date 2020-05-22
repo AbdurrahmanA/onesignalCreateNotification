@@ -15,7 +15,7 @@ type Client struct {
 var client *Client
 
 //NewClient NewClient
-func NewClient() *Client {
+func (c Client) NewClient() *Client {
 	if client == nil {
 		doOnce.Do(func() {
 			client = new(Client)
