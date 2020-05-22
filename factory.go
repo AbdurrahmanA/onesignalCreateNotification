@@ -1,6 +1,7 @@
 package onesignal
 
-var app AppCreate
+//App App
+var App AppCreate
 
 //INotification IPush
 type INotification interface {
@@ -77,7 +78,7 @@ func createNotification(msg string, title string, id ...[]string) error {
 		}
 		iNotification := forAllUsersnoti.newPushForAllUsers()
 		notification := NotificationFactory(iNotification)
-		err := Push(notiAdapter, notification, app)
+		err := Push(notiAdapter, notification, App)
 		return err
 	}
 	forUsernoti := ForUser{Notification{ID: id, Title: title, Message: msg}}
@@ -85,7 +86,7 @@ func createNotification(msg string, title string, id ...[]string) error {
 	iNotification := forUsernoti.newPushForUsers()
 	notification := NotificationFactory(iNotification)
 	notificationType := NotificationForUser{}
-	err := Push(notificationType, notification, app)
+	err := Push(notificationType, notification, App)
 	return err
 
 }
