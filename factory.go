@@ -67,12 +67,14 @@ func NotificationFactory(a INotification) Notification {
 	}
 }
 
+var app AppCreate
+
 //AppCreate AppCreate
 type AppCreate struct {
 	AppID string
 }
 
-func (App AppCreate) createNotification(msg string, title string, id ...[]string) error {
+func (a AppCreate) createNotification(msg string, title string, id ...[]string) error {
 	if len(id) == 0 {
 		forAllUsersnoti := ForAllUsers{Notification{Message: msg, Title: title}}
 		adapted := NotificationForAllUsers{}
@@ -81,7 +83,7 @@ func (App AppCreate) createNotification(msg string, title string, id ...[]string
 		}
 		iNotification := forAllUsersnoti.newPushForAllUsers()
 		notification := NotificationFactory(iNotification)
-		err := Push(notiAdapter, notification, App)
+		err := Push(notiAdapter, notification, app)
 		return err
 	}
 	forUsernoti := ForUser{Notification{ID: id, Title: title, Message: msg}}
@@ -89,7 +91,7 @@ func (App AppCreate) createNotification(msg string, title string, id ...[]string
 	iNotification := forUsernoti.newPushForUsers()
 	notification := NotificationFactory(iNotification)
 	notificationType := NotificationForUser{}
-	err := Push(notificationType, notification, App)
+	err := Push(notificationType, notification, app)
 	return err
 
 }
