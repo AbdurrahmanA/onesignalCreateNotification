@@ -7,14 +7,14 @@ import (
 
 var doOnce sync.Once
 
-//Client ss
+//Client NewClient
 type Client struct {
 	Client http.Client
 }
 
 var client *Client
 
-//NewClient ss
+//NewClient NewClient
 func NewClient() *Client {
 	if client == nil {
 		doOnce.Do(func() {

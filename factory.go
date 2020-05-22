@@ -70,22 +70,22 @@ func NotificationFactory(a INotification) Notification {
 }
 func createNotification(msg string, title string, id ...[]string) error {
 	if len(id) == 0 {
-		a := ForAllUsers{Notification{Message: msg, Title: title}}
-		adapte := NotificationForAllUsers{}
+		forAllUsersnoti := ForAllUsers{Notification{Message: msg, Title: title}}
+		adapted := NotificationForAllUsers{}
 		notiAdapter := NotificationForAllUsersAdapter{
-			users: adapte,
+			users: adapted,
 		}
-		all := a.newPushForAllUsers()
-		n := NotificationFactory(all)
-		err := Push(notiAdapter, n, app)
+		iNotification := forAllUsersnoti.newPushForAllUsers()
+		notification := NotificationFactory(iNotification)
+		err := Push(notiAdapter, notification, app)
 		return err
 	}
-	b := ForUser{Notification{ID: id, Title: title, Message: msg}}
+	forUsernoti := ForUser{Notification{ID: id, Title: title, Message: msg}}
 
-	user1 := b.newPushForUsers()
-	ns := NotificationFactory(user1)
-	den := NotificationForUser{}
-	err := Push(den, ns, app)
+	iNotification := forUsernoti.newPushForUsers()
+	notification := NotificationFactory(iNotification)
+	notificationType := NotificationForUser{}
+	err := Push(notificationType, notification, app)
 	return err
 
 }
