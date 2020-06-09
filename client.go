@@ -7,18 +7,18 @@ import (
 
 var doOnce sync.Once
 
-//Clientc NewClient
-type Clientc struct {
+//Client NewClient
+type Client struct {
 	Client http.Client
 }
 
-var client *Clientc
+var client *Client
 
 //NewClient NewClient
-func NewClient() *Clientc {
+func NewClient() *Client {
 	if client == nil {
 		doOnce.Do(func() {
-			client = new(Clientc)
+			client = new(Client)
 		})
 	}
 	return client
