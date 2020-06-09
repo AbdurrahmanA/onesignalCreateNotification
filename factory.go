@@ -1,42 +1,42 @@
 package onesignal
 
 //INotification IPush
-type INotification interface {
+type iNotification interface {
 	getMessage() string
 	getTitle() string
 	getID() [][]string
 }
 
 //Notification Notification
-type Notification struct {
+type notification struct {
 	Message string
 	Title   string
 	ID      [][]string
 }
 
-func (a Notification) getMessage() string {
+func (a notification) getMessage() string {
 	return a.Message
 }
-func (a Notification) getTitle() string {
+func (a notification) getTitle() string {
 	return a.Title
 }
-func (a Notification) getID() [][]string {
+func (a notification) getID() [][]string {
 	return a.ID
 }
 
 //ForAllUsers ForAllUsers
-type ForAllUsers struct {
-	Notification
+type forAllUsers struct {
+	notification
 }
 
 //ForUser ForUser
-type ForUser struct {
-	Notification
+type forUser struct {
+	notification
 }
 
-func (a ForUser) newPushForUsers() INotification {
-	return &ForUser{
-		Notification: Notification{
+func (a forUser) newPushForUsers() iNotification {
+	return &forUser{
+		notification: notification{
 			Message: a.Message,
 			Title:   a.Title,
 			ID:      a.ID,
@@ -44,13 +44,13 @@ func (a ForUser) newPushForUsers() INotification {
 	}
 }
 
-func (a ForAllUsers) newPushForAllUsers() INotification {
+func (a forAllUsers) newPushForAllUsers() iNotification {
 	var all [][]string
 	var s []string
 	s = append(s, "All")
 	all = append(all, s)
-	return &ForAllUsers{
-		Notification: Notification{
+	return &forAllUsers{
+		notification: notification{
 			Message: a.Message,
 			Title:   a.Title,
 			ID:      all,
@@ -59,8 +59,8 @@ func (a ForAllUsers) newPushForAllUsers() INotification {
 }
 
 //NotificationFactory NotificationFactory
-func NotificationFactory(a INotification) Notification {
-	return Notification{
+func notificationFactory(a iNotification) notification {
+	return notification{
 		Message: a.getMessage(),
 		Title:   a.getTitle(),
 		ID:      a.getID(),
@@ -75,22 +75,22 @@ type AppCreate struct {
 //CreateNotification CreateNotification
 func (app AppCreate) CreateNotification(msg string, title string, id ...[]string) error {
 	if len(id) == 0 {
-		forAllUsersnoti := ForAllUsers{Notification{Message: msg, Title: title}}
-		adapted := NotificationForAllUsers{}
-		notiAdapter := NotificationForAllUsersAdapter{
+		forAllUsersnoti := forAllUsers{notification{Message: msg, Title: title}}
+		adapted := notificationForAllUsers{}
+		notiAdapter := notificationForAllUsersAdapter{
 			users: adapted,
 		}
 		iNotification := forAllUsersnoti.newPushForAllUsers()
-		notification := NotificationFactory(iNotification)
-		err := Push(notiAdapter, notification, app)
+		notification := notificationFactory(iNotification)
+		err := push(notiAdapter, notification, app)
 		return err
 	}
-	forUsernoti := ForUser{Notification{ID: id, Title: title, Message: msg}}
+	forUsernoti := forUser{notification{ID: id, Title: title, Message: msg}}
 
 	iNotification := forUsernoti.newPushForUsers()
-	notification := NotificationFactory(iNotification)
-	notificationType := NotificationForUser{}
-	err := Push(notificationType, notification, app)
+	notification := notificationFactory(iNotification)
+	notificationType := notificationForUser{}
+	err := push(notificationType, notification, app)
 	return err
 
 }

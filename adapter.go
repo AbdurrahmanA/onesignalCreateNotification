@@ -9,12 +9,12 @@ import (
 )
 
 //IPushNotification IPushNotification
-type IPushNotification interface {
+type iPushNotification interface {
 	pushNotification(appID, msg, title string, id [][]string) error
 }
 
 //NotificationForUser NotificationForUser
-type NotificationForUser struct {
+type notificationForUser struct {
 	AppID            string   `json:"app_id"`
 	IncludePlayerIds []string `json:"include_player_ids"`
 	Data             struct {
@@ -28,7 +28,8 @@ type NotificationForUser struct {
 	} `json:"headings"`
 }
 
-func (a NotificationForUser) pushNotification(appID, msg, title string, id [][]string) error {
+//PushNotification PushNotification
+func (a notificationForUser) pushNotification(appID, msg, title string, id [][]string) error {
 	var s []string
 	for i := 0; i < len(id[0]); i++ {
 		s = append(s, id[0][i])
@@ -65,7 +66,7 @@ func (a NotificationForUser) pushNotification(appID, msg, title string, id [][]s
 }
 
 //NotificationForAllUsers NotificationForAllUsers
-type NotificationForAllUsers struct {
+type notificationForAllUsers struct {
 	AppID            string   `json:"app_id"`
 	IncludedSegments []string `json:"included_segments"`
 	Data             struct {
@@ -79,7 +80,8 @@ type NotificationForAllUsers struct {
 	} `json:"headings"`
 }
 
-func (w NotificationForAllUsers) pushNotiForAllUser(appID, msg, title string) error {
+//PushNotiForAllUser PushNotiForAllUser
+func (w notificationForAllUsers) pushNotiForAllUser(appID, msg, title string) error {
 	var s []string
 	s = append(s, "All")
 
@@ -115,17 +117,18 @@ func (w NotificationForAllUsers) pushNotiForAllUser(appID, msg, title string) er
 }
 
 //NotificationForAllUsersAdapter NotificationForAllUsersAdapter
-type NotificationForAllUsersAdapter struct {
-	users NotificationForAllUsers
+type notificationForAllUsersAdapter struct {
+	users notificationForAllUsers
 }
 
-func (w NotificationForAllUsersAdapter) pushNotification(appID, msg, title string, id [][]string) error {
+//PushNotification PushNotification
+func (w notificationForAllUsersAdapter) pushNotification(appID, msg, title string, id [][]string) error {
 	err := w.users.pushNotiForAllUser(appID, msg, title)
 	return err
 }
 
 //Push Push
-func Push(i IPushNotification, n Notification, a AppCreate) error {
+func push(i iPushNotification, n notification, a AppCreate) error {
 	err := i.pushNotification(a.AppID, n.getMessage(), n.getTitle(), n.getID())
 	return err
 }
