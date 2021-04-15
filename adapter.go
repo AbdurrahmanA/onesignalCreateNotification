@@ -1,6 +1,7 @@
 package onesignal
 
 import (
+	b64 "encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -47,7 +48,7 @@ func (a notificationForUser) pushNotification(appID, msg, title string, id [][]s
 	reqBody := strings.NewReader(string(out))
 	request, err := http.NewRequest("POST", "https://onesignal.com/api/v1/notifications", reqBody)
 	request.Header.Set("Content-Type", "application/json")
-	request.Header.Set("Authorization", "Basic NDBjM2I0YTMtNDNkNS00NTgwLWE2MWYtOGNkY2MxNzUyYTdk")
+	request.Header.Set("Authorization", "Basic "+b64.StdEncoding.EncodeToString([]byte(appID)))
 	if err != nil {
 		return errors.New("Http request error")
 	}
@@ -99,7 +100,7 @@ func (w notificationForAllUsers) pushNotiForAllUser(appID, msg, title string) er
 	reqBody := strings.NewReader(string(out))
 	request, err := http.NewRequest("POST", "https://onesignal.com/api/v1/notifications", reqBody)
 	request.Header.Set("Content-Type", "application/json")
-	request.Header.Set("Authorization", "Basic NDBjM2I0YTMtNDNkNS00NTgwLWE2MWYtOGNkY2MxNzUyYTdk")
+	request.Header.Set("Authorization", "Basic "+b64.StdEncoding.EncodeToString([]byte(appID)))
 	if err != nil {
 		return errors.New("http request error")
 	}
